@@ -9,7 +9,9 @@ const createError = require('http-errors');
 require('./config/db.config');
 const app = express();
 
-app.use(express.json())
+const cors = require('./config/cors.config');
+app.use(cors);
+app.use(express.json());
 app.use(logger('dev'));
 
 const api = require('./config/routes.config');
@@ -23,7 +25,7 @@ app.use((error, req, res, next) => {
     error = createError(400, error);
   } else if (error instanceof mongoose.Error.CastError && error.path === '_id') {
     const resourceName = error.model().constructor.modelName;
-    error = createError(404, `resourceName not found`);
+    error = createError(404, `${resourceName} not found`);
   } else if (!error.status) {
     error = createError(500, error);
   }
