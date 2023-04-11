@@ -26,6 +26,9 @@ app.use((error, req, res, next) => {
   } else if (error instanceof mongoose.Error.CastError && error.path === '_id') {
     const resourceName = error.model().constructor.modelName;
     error = createError(404, `${resourceName} not found`);
+  } else if (error.message.includes("E11000")) {
+    // Duplicate key
+    error = createError(409, "Duplicated");
   } else if (!error.status) {
     error = createError(500, error);
   }
