@@ -1,4 +1,5 @@
 const Student = require("../models/student.model");
+const mailer = require("../config/mailer.config");
 
 module.exports.list = (req, res, next) => {
   Student.find() // TODO: filters
@@ -9,7 +10,10 @@ module.exports.list = (req, res, next) => {
 
 module.exports.create = (req, res, next) => {
   Student.create(req.body)
-    .then((student) => res.status(201).json(student))
+    .then((student) => {
+      mailer.sendConfirmationEmail(student);
+      res.status(201).json(student);
+    })
     .catch(next);
 };
 
@@ -28,3 +32,15 @@ module.exports.update = (req, res, next) => {
     .then((student) => res.json(student))
     .catch(next);
 };
+
+module.exports.confirm = (req, res, next) => {
+  req.student.confirm = true;
+
+  req.student
+    .save()
+    .then((student) => {
+      res.redirect(`${process.env.WEB_URL}/login`);
+    })
+    .catch(next);
+};
+

@@ -31,6 +31,7 @@ router.delete(
 router.get('/projects', projects.list);
 router.post('/projects', projects.create);
 router.get('/projects/:id', projectsMid.exists, projects.detail);
+router.get("/students/:id/confirm", studentsMid.exists, students.confirm);
 router.delete('/projects/:id', projectsMid.exists, projects.delete);
 router.patch('/projects/:id', projectsMid.exists, projects.update);
 

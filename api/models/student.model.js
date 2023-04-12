@@ -9,6 +9,15 @@ const studentSchema = new Schema(
       required: "Student name is required",
       minlength: [3, "Student name needs at least 3 chars"],
     },
+    email: {
+      type: String,
+      required: "Student email is required",
+      match: [/^\S+@\S+\.\S+$/, "Student email must be valid"],
+    },
+    confirm: {
+      type: Boolean,
+      default: false,   //By default while production stage leave as TRUE in this way we don´t have to confirm emails
+    },
     username: {
       type: String,
       required: "Student username is required",

@@ -6,6 +6,7 @@ module.exports.cleanBody = (req, res, next) => {
     delete req.body.author;
     delete req.body.createdAt;
     delete req.body.updatedAt;
+    delete req.body.confirm;
   }
 
   next();
