@@ -8,6 +8,7 @@ const secure = require("../middlewares/secure.mid");
 const projectsMid = require('../middlewares/projects.mid');
 const studentsMid = require("../middlewares/students.mid");
 const commentsMid = require("../middlewares/comments.mid");
+const cohorts = require("../controllers/cohorts.controllers");
 
 const todo = (req, res, next) => {
   res.send ("TODO");
@@ -70,5 +71,8 @@ router.patch("/students/:id", secure.auth, students.update);
 router.delete("/students/:id", secure.auth, students.delete);
 
 router.post("/login", students.login);
+
+router.get("/cohorts", cohorts.list);
+router.get("/cohorts/:id", cohorts.detail);
 
 module.exports = router;
