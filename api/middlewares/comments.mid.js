@@ -14,4 +14,14 @@ module.exports.exists = (req, res, next) => {
       }
     })
     .catch(next);
+  };
+
+module.exports.checkAuthor = (req, res, next) => {
+  console.log(req.comment.author.toString(), req.user.id.toString());
+  if (req.comment.author.toString() !== req.user.id.toString()) {
+    next(createError(403, "Forbidden"));
+  } else {
+    next();
+  }
+
 };

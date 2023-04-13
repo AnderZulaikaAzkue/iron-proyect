@@ -15,3 +15,15 @@ module.exports.exists = (req, res, next) => {
     })
     .catch(next)
 }
+
+module.exports.checkAuthor = (req, res, next) => {
+  if (
+    !req.project.authors
+      .map((x) => x.toString())
+      .includes(req.user.id.toString())
+  ) {
+    next(createError(403, "Forbidden"));
+  } else {
+    next;
+  }
+};

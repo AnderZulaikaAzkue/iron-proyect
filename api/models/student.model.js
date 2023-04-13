@@ -104,6 +104,10 @@ studentSchema.pre("save", function (next) {
   }
 });
 
+studentSchema.methods.checkPassword = function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
 studentSchema.virtual("projects", {
   ref: "Project",
   localField: "_id",
