@@ -16,7 +16,7 @@ const studentSchema = new Schema(
     },
     confirm: {
       type: Boolean,
-      default: false,   //By default while production stage leave as TRUE in this way we don´t have to confirm emails
+      default: process.env.USER_CONFIRMATION_REQUIRED === "false",   //By default while production stage leave as TRUE in this way we don´t have to confirm emails
     },
     username: {
       type: String,

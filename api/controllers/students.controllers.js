@@ -3,6 +3,7 @@ const createError = require("http-errors");
 const mailer = require("../config/mailer.config");
 const jwt = require("jsonwebtoken");
 
+const studentConfirmationRequired = process.env.USER_CONFIRMATION_REQUIRED= true
 
 module.exports.list = (req, res, next) => {
   Student.find() // TODO: filters
@@ -14,7 +15,9 @@ module.exports.list = (req, res, next) => {
 module.exports.create = (req, res, next) => {
   Student.create(req.body)
     .then((student) => {
+      if (studentConfirmationRequired) {
       mailer.sendConfirmationEmail(student);
+    }
       res.status(201).json(student);
     })
     .catch(next);
@@ -67,7 +70,7 @@ module.exports.login = (req, res, next) => {
 
         const token = jwt.sign({ sub: student.id, exp: Date.now() / 1000 + 3_600}, 
         "supersecret");
-        res.json({ token });
+        res.json({ token, ...student.toJSON() });
       });
     })
     .catch(next);
